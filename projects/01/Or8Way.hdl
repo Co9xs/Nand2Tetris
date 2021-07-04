@@ -13,5 +13,31 @@ CHIP Or8Way {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    Nand(a=in[0], b=in[0], out=wa1);
+    Nand(a=in[1], b=in[1], out=wb1);
+    Nand(a=wa1, b=wb1, out=wc1); 
+    
+    Nand(a=wc1, b=wc1, out=wa2);
+    Nand(a=in[2], b=in[2], out=wb2);
+    Nand(a=wa2, b=wb2, out=wc2); 
+    
+    Nand(a=wc2, b=wc2, out=wa3);
+    Nand(a=in[3], b=in[3], out=wb3);
+    Nand(a=wa3, b=wb3, out=wc3); 
+    
+    Nand(a=wc3, b=wc3, out=wa4);
+    Nand(a=in[4], b=in[4], out=wb4);
+    Nand(a=wa4, b=wb4, out=wc4); 
+    
+    Nand(a=wc4, b=wc4, out=wa5);
+    Nand(a=in[5], b=in[5], out=wb5);
+    Nand(a=wa5, b=wb5, out=wc5);
+    
+    Nand(a=wc5, b=wc5, out=wa6);
+    Nand(a=in[6], b=in[6], out=wb6);
+    Nand(a=wa6, b=wb6, out=wc6);
+    
+    Nand(a=wc6, b=wc6, out=wa7);
+    Nand(a=in[7], b=in[7], out=wb7);
+    Nand(a=wa7, b=wb7, out=out);
 }
