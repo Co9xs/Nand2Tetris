@@ -13,5 +13,52 @@ CHIP Or16 {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    Nand(a=a[0], b=a[0], out=wa0);
+    Nand(a=b[0], b=b[0], out=wb0);
+    Nand(a=wa0, b=wb0, out=out[0]);
+    Nand(a=a[1], b=a[1], out=wa1);
+    Nand(a=b[1], b=b[1], out=wb1);
+    Nand(a=wa1, b=wb1, out=out[1]);
+    Nand(a=a[2], b=a[2], out=wa2);
+    Nand(a=b[2], b=b[2], out=wb2);
+    Nand(a=wa2, b=wb2, out=out[2]);
+    Nand(a=a[3], b=a[3], out=wa3);
+    Nand(a=b[3], b=b[3], out=wb3);
+    Nand(a=wa3, b=wb3, out=out[3]);
+    Nand(a=a[4], b=a[4], out=wa4);
+    Nand(a=b[4], b=b[4], out=wb4);
+    Nand(a=wa4, b=wb4, out=out[4]);
+    Nand(a=a[5], b=a[5], out=wa5);
+    Nand(a=b[5], b=b[5], out=wb5);
+    Nand(a=wa5, b=wb5, out=out[5]);
+    Nand(a=a[6], b=a[6], out=wa6);
+    Nand(a=b[6], b=b[6], out=wb6);
+    Nand(a=wa6, b=wb6, out=out[6]);
+    Nand(a=a[7], b=a[7], out=wa7);
+    Nand(a=b[7], b=b[7], out=wb7);
+    Nand(a=wa7, b=wb7, out=out[7]);
+    Nand(a=a[8], b=a[8], out=wa8);
+    Nand(a=b[8], b=b[8], out=wb8);
+    Nand(a=wa8, b=wb8, out=out[8]);
+    Nand(a=a[9], b=a[9], out=wa9);
+    Nand(a=b[9], b=b[9], out=wb9);
+    Nand(a=wa9, b=wb9, out=out[9]);
+    Nand(a=a[10], b=a[10], out=wa10);
+    Nand(a=b[10], b=b[10], out=wb10);
+    Nand(a=wa10, b=wb10, out=out[10]);
+    Nand(a=a[11], b=a[11], out=wa11);
+    Nand(a=b[11], b=b[11], out=wb11);
+    Nand(a=wa11, b=wb11, out=out[11]);
+    Nand(a=a[12], b=a[12], out=wa12);
+    Nand(a=b[12], b=b[12], out=wb12);
+    Nand(a=wa12, b=wb12, out=out[12]);
+    Nand(a=a[13], b=a[13], out=wa13);
+    Nand(a=b[13], b=b[13], out=wb13);
+    Nand(a=wa13, b=wb13, out=out[13]);
+    Nand(a=a[14], b=a[14], out=wa14);
+    Nand(a=b[14], b=b[14], out=wb14);
+    Nand(a=wa14, b=wb14, out=out[14]);
+    Nand(a=a[15], b=a[15], out=wa15);
+    Nand(a=b[15], b=b[15], out=wb15);
+    Nand(a=wa15, b=wb15, out=out[15]);
 }
