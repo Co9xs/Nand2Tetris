@@ -43,4 +43,27 @@ CHIP ALU {
 
     PARTS:
    // Put you code here:
+      Mux16(a=x,b=false,sel=zx, out=w1); // zxが1のとき出力されるのはbが選択されるが、bは常にfalseなので、xを全て0にする。
+   Mux16(a=y,b=false,sel=zy, out=w2); // 同上。
+   
+   // nx及びnyの値に応じてビットを反転する処理
+   Not16(in=w1,out=nw1);
+   Mux16(a=w1,b=nw1,sel=nx, out=w3); // nxが1のとき出力されるのは反転したnw1になる。
+   Not16(in=w2,out=nw2);
+   Mux16(a=w2,b=nw2,sel=ny, out=w4); // 同上
+   
+   // fが1のときに加算、0のときにAnd演算
+   And16(a=w3,b=w4, out=xandy); // And演算
+   Add16(a=w3,b=w4, out=addxy); // 加算
+   Mux16(a=xandy,b=addxy, sel=f, out=w5); // fの値に応じて加算かAnd演算を行う。
+   
+   // noの値に応じて出力ビットを反転するかを決定する処理
+   Not16(in=w5, out=notw5);
+   Mux16(a=w5,b=notw5, sel=no, out=out,out[0..7]=out0to7,out[8..15]=out8to15,out[15]=ng); // この後、8入力Orゲートに入れる処理を行うため、1ビット目から8ビット目と9ビット目から16ビット目に分割する。また、out[15]は符号ビットなので、このビットが1ならば負数→ out < 0でtrueになる動作が実装
+   
+   // 出力値が0かのチェック
+   Or8Way(in=out0to7, out=or0to7);
+   Or8Way(in=out8to15, out=or8to15);
+   Or (a=or0to7,b=or8to15,out=or0to15);
+   Not(in=or0to15,out=zr); //出力値の全てのビットが0であれば、zr=1となる。
 }
