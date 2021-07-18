@@ -17,4 +17,9 @@ CHIP PC {
 
     PARTS:
     // Put your code here:
+    Inc16(in=fb, out=w1);	// アドレスの値を加算
+    Mux16(a=fb,b=w1,sel=inc, out=w2);	// inc == 1 ならば加算したアドレスを出力
+    Mux16(a=w2,b=in,sel=load, out=w3);	// load == 1 ならばinの値を出力
+    Mux16(a=w3,b=false,sel=reset, out=w4);	// reset == 1 ならば記憶しているアドレスをリセット
+    Register(in=w4,load=true, out=out,out=fb);	// アドレスを出力し、fbにアドレスを記録
 }
