@@ -10,3 +10,42 @@
 // R0 >= 0, R1 >= 0, and R0*R1 < 32768.
 
 // Put your code here.
+@sum
+M=0
+
+// 残りカウントをR1で初期化
+@R1
+D=M
+@count 
+M=D
+
+(LOOP)
+    // チェック
+    @count
+    D=M
+    @END
+    D;JEQ
+
+    // 合計値計算
+    @R0
+    D=M
+    @sum
+    M=M+D
+
+    // カウントを減らす
+    @count
+    M=M-1
+
+    // ループ繰り返す
+    @LOOP
+    0;JMP
+(END)
+
+// R2に記録
+@sum
+D=M
+@R2
+M=D
+
+@END
+0;JMP
