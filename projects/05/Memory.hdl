@@ -27,5 +27,22 @@ CHIP Memory {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+
+    // アドレス13,14で判断
+    // address[14]=1 かつ address[13]=1 はキーボード
+    // address[14]=1 かつ address[13]=0 はスクリーン
+    DMux4Way(in=load, sel[0]=address[13], sel[1]=address[14], a=isload-ram1, b=isload-ram2, c=isload-screen, d=isload-keyboard);
+
+    Or(a=isload-ram1, b=isload-ram2, out=isload-ram);
+
+    // RAM領域はこれで完成
+    RAM16K(in=in, load=isload-ram, address=address[0..13], out=out-ram);
+
+    // スクリーン
+    Screen(in=in, load=isload-screen, address=address[0..12], out=out-screen);
+
+    // キーボード
+    Keyboard(out=out-keyboard);
+
+    Mux4Way16(a=out-ram, b=out-ram, c=out-screen, d=out-keyboard, sel[0]=address[13], sel[1]=address[14], out=out);    
 }
