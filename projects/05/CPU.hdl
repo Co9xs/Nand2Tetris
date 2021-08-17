@@ -39,5 +39,68 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    // Put your code here:
-}
+
+    // CPU制御ユニット
+    // a命令かc命令か
+    // a-instruction
+    // c-instruction
+    Or(a=instruction[15], b=instruction[15], out=c-instruction);
+    Not(in=c-instruction, out=a-instruction);
+
+    // Dレジスタの保存はC命令の場合のみ
+    And(a=instruction[4], b=c-instruction, out=isload-d);
+
+    // instruction[4]はd2=>Dに保存するかどうか
+    DRegister(in=alu-out, load=isload-d, out=out-d);
+
+    // Aレジスタが保存するのは、A命令時の定数かC命令時の計算結果
+    Mux16(a=alu-out, b=instruction, sel=a-instruction, out=in-a);
+
+    // A命令でもC命令でも、結局のところAレジスタをloadするかどうか
+    Or(a=instruction[5], b=a-instruction, out=isload-a);
+
+    // instruction[5]はd1=>Aに保存するかどうか
+    // outを切り取るのは問題ない？？
+    ARegister(in=in-a, load=isload-a, out[0..15]=out-a, out[0..14]=addressM);
+
+    // instruction[12]はa。ALUのyはa=1ならM,a=0ならA
+    // ALUにMを使うかAを使うか
+    Mux16(a=out-a, b=inM, sel=instruction[12], out=aluin-y);
+
+    // メモリの演算
+    // 命令がそのまま流れる？
+    ALU(x=out-d, y=aluin-y, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=alu-out, out[0..7]=alu-out1, out[8..15]=alu-out2, out[15]=alu-minus, out=outM, zr=alu-zr, ng=alu-ng);
+
+
+    // Mに書き込み行うかどうか
+    // CPUの領域外？
+    // C命令の時のみ出力
+    And(a=instruction[3], b=c-instruction, out=writeM);
+    
+    // jmp判定
+    // 負の数はa-out[15]=1
+    // 正の数はa-out[15]=0
+    // 以下の変数を計算
+    // alu-minus
+    // alu-plus
+    // alu-iszero
+    Not(in=alu-minus, out=alu-plusorzero); //正の数または0
+    Or8Way(in=alu-out1, out=temp1); // 0判定その1
+    Or8Way(in=alu-out2, out=temp2); // 0判定その2
+    Or(a=temp1, b=temp2, out=temp3); // 0判定その3
+    Not(in=temp3, out=alu-iszero);
+    And(a=alu-plusorzero, b=temp3, out=alu-plus);
+
+    // カウンタ
+    // C命令の場合のみ飛ぶのを忘れずに
+    // j1, j2, j3の計算
+    And(a=alu-minus, b=instruction[2], out=is-j1);
+    And(a=alu-iszero, b=instruction[1], out=is-j2);
+    And(a=alu-plus, b=instruction[0], out=is-j3);
+    // 条件に合致するか
+    Or8Way(in[0]=is-j1, in[1]=is-j2, in[2]=is-j3, out=is-jump);
+    // なおかつ、C命令か
+    And(a=is-jump, b=c-instruction, out=can-jump);
+    // PC処理
+    // incは基本true
+    PC(in=out-a, load=can-jump, inc=true, reset=reset, out[0..14]=pc);
