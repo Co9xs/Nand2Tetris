@@ -104,3 +104,4 @@ CHIP CPU {
     // PC処理
     // incは基本true
     PC(in=out-a, load=can-jump, inc=true, reset=reset, out[0..14]=pc);
+}
