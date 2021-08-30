@@ -47,3 +47,7 @@ func PathInfo(path string) (name, dir string, isFile bool) {
 	isFile = !isDir
 	return
 }
+
+func ToXMLTag(tag, val string) string {
+	return "<" + tag + ">" + normalizeXMLSymbol(val) + "</" + tag + ">"
+}
